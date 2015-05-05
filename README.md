@@ -18,6 +18,6 @@ Example usage:
 See defaults/main.yml for the default settings of those options.
 
 
-## Options
+### Options
 
-*sslredirect*: Boolean. Controls whether an automatic redirect from the hostname mentioned under `server_name`:80 to `server_name`:443 should be installed.
+**sslredirect**: Boolean. Controls whether an automatic redirect from the hostname mentioned under `server_name`:80 to `server_name`:443 should be installed.
