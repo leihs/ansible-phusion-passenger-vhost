@@ -1,0 +1,29 @@
+<VirtualHost *:443>
+    ServerName {{ server_name }}
+    {% for alias in server_aliases %}
+      ServerAlias {{ alias }}
+    {% endfor %}
+    PassengerRuby {{ passenger_ruby }}
+    DocumentRoot {{ document_root }}
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/{{ certificate_file }}
+    SSLCertificateKeyFile /etc/ssl/private/{{ certificate_key_file }}
+    {% if certificate_chain_file %}
+    SSLCertificateChainFile /etc/ssl/{{ certificate_chain_file }}
+    {% endif %}
+
+
+    {% if max_requests %}
+    PassengerMaxRequests {{ max_requests }}
+    {% endif %}
+
+    <IfModule mod_rewrite.c>
+        RewriteEngine On
+        RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+        RewriteCond %{DOCUMENT_ROOT}/maintenance.enable -f
+        RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+        RewriteRule ^.*$ /maintenance.html [R=503,L]
+        ErrorDocument 503 /maintenance.html
+    </IfModule>
+
+</VirtualHost>

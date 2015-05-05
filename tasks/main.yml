@@ -1,0 +1,42 @@
+---
+- name: Enable mod_rewrite
+  command: a2enmod rewrite
+
+- name: Install Rails-style virtual host
+  template: src=vhost.conf.j2 dest=/etc/apache2/sites-available/{{server_name}}
+  when: ssl|bool != True
+
+- name: Make sure the SSL certificate is installed
+  copy: src=files/ssl/{{ certificate_file }} dest="/etc/ssl/{{ certificate_file }}"
+  when: ssl | bool
+
+- name: Make sure the SSL certificate private key is installed
+  copy: src=files/ssl/{{ certificate_key_file }} dest="/etc/ssl/private/{{ certificate_key_file }}"
+  when: ssl | bool
+
+- name: Make sure the SSL certificate chain file is installed
+  copy: src=files/ssl/{{ certificate_chain_file }} dest="/etc/ssl/{{ certificate_chain_file }}"
+  when: (ssl | bool) and certificate_chain_file
+
+- name: Install Rails-style virtual host (with SSL)
+  template: src=vhost.ssl.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.ssl"
+  when: ssl | bool
+
+- name: Install a redirect virtual host from non-SSL to SSL
+  template: src=vhost.sslredirect.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.sslredirect"
+  when: ssl|bool and sslredirect|bool
+
+- name: Enable redirect virtual host
+  command: "a2ensite {{ server_name }}.sslredirect"
+  notify: reload apache
+  when: ssl|bool and sslredirect|bool
+
+- name: Enable Rails-style virtual host
+  command: a2ensite {{ server_name }}
+  notify: reload apache
+
+- name: Enable Rails-style virtual host (with SSL)
+  command: "a2ensite {{ server_name }}.ssl"
+  notify: reload apache
+  when: ssl | bool
+
