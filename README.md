@@ -18,6 +18,17 @@ Example usage:
 See defaults/main.yml for the default settings of those options.
 
 
-### Options
+## Options
 
 **sslredirect**: Boolean. Controls whether an automatic redirect from the hostname mentioned under `server_name`:80 to `server_name`:443 should be installed.
+
+
+## Adding to your own Ansible dir
+
+If you stick reasonably closely to Ansible's recommended directory layout and if you keep your Ansible stuff in a git repo, you can add this role as a submodule:
+
+    git submodule add https://github.com/psy-q/ansible-phusion-passenger-vhost.git roles/ruby/passenger_vhost
+    git submodule init
+    git submodule update
+
+Of course you use a target path that's cooler than mine.
