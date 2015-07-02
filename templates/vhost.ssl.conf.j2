@@ -17,6 +17,10 @@
     PassengerMaxRequests {{ max_requests }}
     {% endif %}
 
+    <Directory {{ document_root }}>
+      Require all granted
+    </Directory>
+
     <IfModule mod_rewrite.c>
         RewriteEngine On
         RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
