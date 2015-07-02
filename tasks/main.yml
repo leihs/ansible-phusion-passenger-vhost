@@ -3,7 +3,7 @@
   command: a2enmod rewrite
 
 - name: Install Rails-style virtual host
-  template: src=vhost.conf.j2 dest=/etc/apache2/sites-available/{{server_name}}
+  template: src=vhost.conf.j2 dest=/etc/apache2/sites-available/{{server_name}}.conf
   when: ssl|bool != True
 
 - name: Make sure the SSL certificate is installed
@@ -23,7 +23,7 @@
   when: ssl | bool
 
 - name: Install a redirect virtual host from non-SSL to SSL
-  template: src=vhost.sslredirect.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.sslredirect"
+  template: src=vhost.sslredirect.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.sslredirect.conf"
   when: ssl|bool and sslredirect|bool
 
 - name: Enable redirect virtual host
@@ -39,4 +39,3 @@
   command: "a2ensite {{ server_name }}.ssl"
   notify: reload apache
   when: ssl | bool
-

@@ -1,5 +1,7 @@
 Used to set up a virtual host with some options specific to Phusion Passenger, such as `PassengerRuby`.
 
+This supports Debian 8.1 (jessie).
+
 Example usage:
 
 
