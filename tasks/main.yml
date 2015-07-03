@@ -22,6 +22,26 @@
   template: src=vhost.ssl.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.ssl"
   when: ssl | bool
 
+- name: Enable Rails-style virtual host
+  command: a2ensite {{ server_name }}
+  notify: reload apache
+  when: enabled | bool
+
+- name: Enable Rails-style virtual host (with SSL)
+  command: "a2ensite {{ server_name }}.ssl"
+  notify: reload apache
+  when: (ssl | bool) and (enabled | bool)
+
+- name: Disable Rails-style virtual host
+  command: a2dissite {{ server_name }}
+  notify: reload apache
+  when: not enabled
+
+- name: Disable Rails-style virtual host (with SSL)
+  command: "a2dissite {{ server_name }}.ssl"
+  notify: reload apache
+  when: (ssl | bool) and not enabled
+
 - name: Install a redirect virtual host from non-SSL to SSL
   template: src=vhost.sslredirect.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.sslredirect.conf"
   when: ssl|bool and sslredirect|bool
@@ -30,12 +50,3 @@
   command: "a2ensite {{ server_name }}.sslredirect"
   notify: reload apache
   when: ssl|bool and sslredirect|bool
-
-- name: Enable Rails-style virtual host
-  command: a2ensite {{ server_name }}
-  notify: reload apache
-
-- name: Enable Rails-style virtual host (with SSL)
-  command: "a2ensite {{ server_name }}.ssl"
-  notify: reload apache
-  when: ssl | bool
