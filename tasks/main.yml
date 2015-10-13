@@ -7,16 +7,16 @@
   when: ssl|bool != True
 
 - name: Make sure the SSL certificate is installed
-  copy: src={{ certificate_file }} dest="/etc/ssl/{{ certificate_file | basename }}"
-  when: ssl | bool
+  copy: src={{ local_certificate_file }} mode=0644 group=root owner=root dest="/etc/ssl/{{ local_certificate_file | basename }}"
+  when: ssl | bool and local_certificate_file
 
 - name: Make sure the SSL certificate private key is installed
-  copy: src={{ certificate_key_file }} dest="/etc/ssl/private/{{ certificate_key_file | basename }}"
-  when: ssl | bool
+  copy: src={{ local_certificate_key_file }} mode=0640 owner=root group=ssl-cert dest="/etc/ssl/private/{{ local_certificate_key_file | basename }}"
+  when: ssl | bool and local_certificate_key_file
 
 - name: Make sure the SSL certificate chain file is installed
-  copy: src={{ certificate_chain_file }} dest="/etc/ssl/{{ certificate_chain_file | basename }}"
-  when: (ssl | bool) and certificate_chain_file
+  copy: src={{ local_certificate_chain_file }} mode=0644 group=root owner=root dest="/etc/ssl/{{ local_certificate_chain_file | basename }}"
+  when: (ssl | bool) and local_certificate_chain_file
 
 - name: Install Rails-style virtual host (with SSL)
   template: src=vhost.ssl.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.ssl"

@@ -6,12 +6,22 @@
     PassengerRuby {{ passenger_ruby }}
     DocumentRoot {{ document_root }}
     SSLEngine On
-    SSLCertificateFile /etc/ssl/{{ certificate_file }}
-    SSLCertificateKeyFile /etc/ssl/private/{{ certificate_key_file }}
-    {% if certificate_chain_file %}
-    SSLCertificateChainFile /etc/ssl/{{ certificate_chain_file }}
+
+    {% if local_certificate_file and local_certificate_key_file %}
+    SSLCertificateFile /etc/ssl/{{ local_certificate_file }}
+    SSLCertificateKeyFile /etc/ssl/private/{{ local_certificate_key_file }}
+    {% if local_certificate_chain_file %}
+    SSLCertificateChainFile /etc/ssl/{{ local_certificate_chain_file }}
+    {% endif %}
     {% endif %}
 
+    {% if certificate_file and certificate_key_file %}
+    SSLCertificateFile {{ certificate_file }}
+    SSLCertificateKeyFile {{ certificate_key_file }}
+    {% if certificate_chain_file %}
+    SSLCertificateChainFile {{ certificate_chain_file }}
+    {% endif %}
+    {% endif %}
 
     {% if max_requests %}
     PassengerMaxRequests {{ max_requests }}
