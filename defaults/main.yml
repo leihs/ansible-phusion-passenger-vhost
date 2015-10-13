@@ -4,6 +4,3 @@ server_aliases: []
 ssl: False
 sslredirect: False
 max_requests: False
-#document_root: False
-#passenger_ruby: False
-#server_name: False

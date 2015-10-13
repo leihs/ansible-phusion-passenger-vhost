@@ -12,9 +12,9 @@ Example usage:
         max_requests: 10000,
         ssl: true,
         sslredirect: true,
-        certificate_file: "leihs.local.crt",
-        certificate_chain_file: "leihs.local.bundle.crt",
-        certificate_key_file: "leihs.local.key" }
+        certificate_file: "/mnt/secret/certs/leihs.local.crt",
+        certificate_chain_file: "/mnt/secret/certs/leihs.local.bundle.crt",
+        certificate_key_file: "/mnt/secret/keys/leihs.local.key" }
         }
 
 See defaults/main.yml for the default settings of those options.

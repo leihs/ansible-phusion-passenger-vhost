@@ -7,15 +7,15 @@
   when: ssl|bool != True
 
 - name: Make sure the SSL certificate is installed
-  copy: src=files/ssl/{{ certificate_file }} dest="/etc/ssl/{{ certificate_file }}"
+  copy: src={{ certificate_file }} dest="/etc/ssl/{{ certificate_file | basename }}"
   when: ssl | bool
 
 - name: Make sure the SSL certificate private key is installed
-  copy: src=files/ssl/{{ certificate_key_file }} dest="/etc/ssl/private/{{ certificate_key_file }}"
+  copy: src={{ certificate_key_file }} dest="/etc/ssl/private/{{ certificate_key_file | basename }}"
   when: ssl | bool
 
 - name: Make sure the SSL certificate chain file is installed
-  copy: src=files/ssl/{{ certificate_chain_file }} dest="/etc/ssl/{{ certificate_chain_file }}"
+  copy: src={{ certificate_chain_file }} dest="/etc/ssl/{{ certificate_chain_file | basename }}"
   when: (ssl | bool) and certificate_chain_file
 
 - name: Install Rails-style virtual host (with SSL)
