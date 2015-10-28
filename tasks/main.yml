@@ -19,13 +19,13 @@
   when: (ssl | bool) and (local_certificate_chain_file is defined)
 
 - name: Install Rails-style virtual host (with SSL)
-  template: src=vhost.ssl.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.ssl"
+  template: src=vhost.ssl.conf.j2 dest="/etc/apache2/sites-available/{{server_name}}.ssl.conf"
   when: ssl | bool
 
 - name: Enable Rails-style virtual host
   command: a2ensite {{ server_name }}
   notify: reload apache
-  when: enabled | bool
+  when: (ssl == False) and ((enabled | bool) == True)
 
 - name: Enable Rails-style virtual host (with SSL)
   command: "a2ensite {{ server_name }}.ssl"
