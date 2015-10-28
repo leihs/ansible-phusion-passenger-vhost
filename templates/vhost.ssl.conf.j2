@@ -7,18 +7,18 @@
     DocumentRoot {{ document_root }}
     SSLEngine On
 
-    {% if local_certificate_file and local_certificate_key_file %}
+    {% if (local_certificate_file is defined) and (local_certificate_key_file is defined) %}
     SSLCertificateFile /etc/ssl/{{ local_certificate_file }}
     SSLCertificateKeyFile /etc/ssl/private/{{ local_certificate_key_file }}
-    {% if local_certificate_chain_file %}
+    {% if local_certificate_chain_file is defined %}
     SSLCertificateChainFile /etc/ssl/{{ local_certificate_chain_file }}
     {% endif %}
     {% endif %}
 
-    {% if certificate_file and certificate_key_file %}
+    {% if (certificate_file is defined) and (certificate_key_file is defined) %}
     SSLCertificateFile {{ certificate_file }}
     SSLCertificateKeyFile {{ certificate_key_file }}
-    {% if certificate_chain_file %}
+    {% if certificate_chain_file is defined %}
     SSLCertificateChainFile {{ certificate_chain_file }}
     {% endif %}
     {% endif %}
