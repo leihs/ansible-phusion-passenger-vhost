@@ -17,6 +17,19 @@ Example usage:
         local_certificate_key_file: "/mnt/secret/keys/leihs.local.key" }
         }
 
+Instead of copying a certificate from your local machine, you can also point to a certificate already present on the target server::
+
+    - { role: leihs_instance,
+        server_name: "leihs.local",
+        document_root: "/home/leihs/production/current/public",
+        passenger_ruby: "/home/leihs/.rvm/wrappers/ruby-2.1.5/ruby",
+        ssl: true,
+        sslredirect: true,
+        certificate_file: "/mnt/secret/certs/leihs.local.crt",
+        certificate_chain_file: "/mnt/secret/certs/leihs.local.bundle.crt",
+        certificate_key_file: "/mnt/secret/keys/leihs.local.key" }
+        }
+
 See defaults/main.yml for the default settings of those options.
 
 
