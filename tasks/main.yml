@@ -2,6 +2,10 @@
 - name: Enable mod_rewrite
   command: a2enmod rewrite
 
+- name: Enable mod_ssl
+  command: a2enmod ssl
+  when: ssl|bool
+
 - name: Install Rails-style virtual host
   template: src=vhost.conf.j2 dest=/etc/apache2/sites-available/{{server_name}}.conf
   when: ssl|bool != True
